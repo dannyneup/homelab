@@ -1,0 +1,29 @@
+name: home.services.documents
+services:
+  paperless-ngx:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/data:/usr/src/paperless/data
+      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/media:/usr/src/paperless/media
+    environment:
+      PAPERLESS_REDIS: redis://paperless-ngx_redis:6379/0
+      PAPERLESS_DBENGINE: postgres
+      PAPERLESS_DBHOST: postgres
+      PAPERLESS_DBNAME: ${PAPERLESS_POSTGRES_DATABASE}
+      PAPERLESS_DBUSER: ${PAPERLESS_POSTGRES_USER}
+      PAPERLESS_DBPASS: ${PAPERLESS_POSTGRES_PASSWORD}
+  paperless-ngx_redis:
+    image: docker.io/library/redis:7
+    restart: unless-stopped
+    volumes:
+      - ${CONTAINER_DATA_DIRECTORY}/documents/redis/data:/data
+
+networks:
+  postgres:
+    external: true
