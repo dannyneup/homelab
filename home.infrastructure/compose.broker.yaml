@@ -1,4 +1,4 @@
-name: home.infrastructure.broker
+name: home_infrastructure_broker
 services:
   mosquitto:
     container_name: mosquitto

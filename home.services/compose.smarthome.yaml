@@ -1,4 +1,4 @@
-name: home.services.smarthome
+name: home_services_smarthome
 services:
   zigbee2mqtt:
     container_name: zigbee2mqtt
