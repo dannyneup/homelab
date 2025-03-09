@@ -1,6 +1,6 @@
 name: home_services_documents
 services:
-  webserver:
+  paperless-ngx:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
