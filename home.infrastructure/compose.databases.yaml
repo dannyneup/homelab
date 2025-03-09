@@ -1,20 +1,18 @@
-name: home.infrastructure.databases
+name: home-infrastructure-databases
 services:
   postgres:
     image: docker.io/library/postgres:16
     restart: unless-stopped
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/infrastructure/postgres/data:/var/lib/postgresql/data
-      - ./init-scripts/databases/postgres.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./init-scripts/databases/postgres/init.paperless.sh:/docker-entrypoint-initdb.d/init.paperless.sh
     environment:
-      POSTGRES_ADMIN_USER: ${INFRASTRUCTURE_POSTGRES_ADMIN_USER}
-      POSTGRES_ADMIN_PASSWORD: ${INFRASTRUCTURE_POSTGRES_ADMIN_PASSWORD}
-      DATABASES: |
-        ${PAPERLESS_POSTGRES_DATABASE}
-      USERS: |
-        ${PAPERLESS_POSTGRES_USER}
-      PASSWORDS: |
-        ${PAPERLESS_POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PAPERLESS_POSTGRES_DATABASE: ${PAPERLESS_POSTGRES_DATABASE}
+      PAPERLESS_POSTGRES_USER: ${PAPERLESS_POSTGRES_USER}
+      PAPERLESS_POSTGRES_PASSWORD: ${PAPERLESS_POSTGRES_PASSWORD}
+    ports: 
+      - 5432:5432
 
 networks:
   postgres:
