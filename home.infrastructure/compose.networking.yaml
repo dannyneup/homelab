@@ -1,0 +1,13 @@
+name: home_infrastructure_networking
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    volumes:
+      - ${CONTAINER_DATA_DIRECTORY}/infrastructure/nginx-proxy-manager/data:/data
+      - ${CONTAINER_DATA_DIRECTORY}/infrastructure/nginx-proxy-manager/letsencrypt:/etc/letsencrypt

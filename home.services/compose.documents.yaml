@@ -7,7 +7,7 @@ services:
       - paperless-ngx_redis
       - paperless-ngx_postgres
     ports:
-      - "8000:8000"
+      - 8000:8000
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/media:/usr/src/paperless/media
