@@ -1,11 +1,10 @@
-name: home_infrastructure_pubsub
 services:
   mosquitto:
     container_name: mosquitto
-    image: eclipse-mosquitto:2.0
+    image: eclipse-mosquitto:2.0.21
     restart: unless-stopped
     volumes:
-      - "${CONTAINER_DATA_DIRECTORY}/smarthome/mosquitto:/mosquitto"
+      - "${CONTAINER_DATA_DIRECTORY}/mosquitto:/mosquitto"
     ports:
       - "1883:1883"
       - "9001:9001"

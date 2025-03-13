@@ -1,5 +1,4 @@
-name: home_services_documents
-services:
+ervices:
   paperless-ngx:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
@@ -9,8 +8,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/data:/usr/src/paperless/data
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx/media:/usr/src/paperless/media
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
       PAPERLESS_REDIS: redis://paperless-ngx_redis:6379
       PAPERLESS_DBHOST: paperless-ngx_postgres

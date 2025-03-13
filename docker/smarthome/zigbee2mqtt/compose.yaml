@@ -1,11 +1,10 @@
-name: home_services_smarthome
 services:
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt
     restart: unless-stopped
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/smarthome/zigbee2mqtt/data:/app/data
+      - ${CONTAINER_DATA_DIRECTORY}/zigbee2mqtt/data:/app/data
       - /run/udev:/run/udev:ro
     ports:
       - 8080:8080
