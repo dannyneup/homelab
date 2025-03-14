@@ -1,0 +1,54 @@
+global:
+  sendAnonymousUsage: false
+
+log:
+  level: DEBUG
+
+accessLog: {}
+
+api: 
+  dashboard: true
+  insecure: true
+  debug: true
+
+entryPoints:
+  web:
+    address: :80
+    http: 
+      redirections:
+        entryPoint:
+          to: websecure
+          schema: https
+  websecure:
+    address: :443
+
+certificatesResolver:
+  cloudflare-prod:
+    acme:
+      storage: /etc/traefik/certs/cloudflare-acme.json
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      keyType: EC256
+      dnsChallenge: 
+        provider: cloudflare
+        resolver: 
+          - 1.1.1.1:83
+          - 8.8.8.8:83
+  cloudflare-staging:
+    acme:
+      storage: /etc/traefik/certs/cloudflare-acme.json
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      keyType: EC256
+      dnsChallenge: 
+        provider: cloudflare
+        resolver: 
+          - 1.1.1.1:83
+          - 8.8.8.8:83
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    watch: true
+  file:
+    directory: /etc/traefik/conf/
+    watch: true

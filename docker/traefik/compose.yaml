@@ -1,0 +1,23 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:3.3.4
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./config/conf/:/etc/traefik/conf/
+      - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/
+    environment:
+      - CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+    labels:
+      - traefik.http.middlewares.traefik-auth.basicauth.users: ${DASHBOARD_CREDENTIALS}
+      - traefik.certificatesresolvers.cloudflare.acme.email: ${CLOUDFLARE_EMAIL}
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy: 

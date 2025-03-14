@@ -1,0 +1,11 @@
+http:
+  routers:
+    traefik-dashboard:
+      entryPoints:
+        - websecure
+      rule: Host(`traefik-dashboard.home.neukoch.com`)
+      middlewares:
+        - traefik-auth
+      tls:
+        certResolver: cloudflare-staging
+      service: api@internal
