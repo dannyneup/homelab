@@ -9,6 +9,7 @@ services:
       - --ref=${GITSYNC_REF} 
       - --root=/tmp/git
       - --period=10s
+      - --verbose=9
     volumes:
       - ${GITSYNC_DIRECTORY}:/tmp/git:rw
     user: ${UID}:${GID}
