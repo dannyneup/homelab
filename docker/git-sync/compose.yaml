@@ -1,12 +1,13 @@
 services:
-  git-sync-main:
+  git-sync:
     container_name: git-sync-main
-    image: k8s.gcr.io/git-sync/git-sync:v4.4.0
+    image: registry.k8s.io/git-sync/git-sync:v4.4.0
     restart: unless-stopped
-    environment:
-      GIT_SYNC_REPO: https://github.com/dannyneup/homelab
-      GIT_SYNC_BRANCH: main
-      GIT_SYNC_DEST: /git
-      GIT_SYNC_WAIT: 30
+    entrypoint:
+      - /git-sync
+      - --repo=${GITSYNC_REPO}
+      - --ref=${GITSYNC_REF} 
+      - --root=/tmp/git
+      - --period=10s
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/config:/git:rw
+      - ${GITSYNC_DIRECTORY}:/tmp/git:rw
