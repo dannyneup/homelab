@@ -7,8 +7,8 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./config/conf/:/etc/traefik/conf/:ro
+      - ${PROJECT_PATH:-$PWD}/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${PROJECT_PATH:-$PWD}/config/conf/:/etc/traefik/conf/:ro
       - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/:rw
     environment:
       CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
