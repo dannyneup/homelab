@@ -33,7 +33,7 @@ services:
       GIT_SYNC_DEST: /git
       GIT_SYNC_WAIT: 30
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/config:/git:rw
+      - ${CONTAINER_DATA_DIRECTORY}/traefik/config:/git/docker/traefik/config:rw
 
 networks:
   proxy: 
