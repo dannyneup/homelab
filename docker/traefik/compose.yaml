@@ -7,8 +7,8 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/config/conf/:/etc/traefik/conf/:ro
+      - ${REPO_DATA_DIRECTORY}/docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${REPO_DATA_DIRECTORY}/docker/traefik/config/conf/:/etc/traefik/conf/:ro
       - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/:rw
     environment:
       CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
@@ -20,20 +20,6 @@ services:
     networks:
       - proxy
     restart: unless-stopped
-    depends_on: 
-      - git-sync-test
-
-  git-sync-test:
-    container_name: git-sync-test
-    image: k8s.gcr.io/git-sync/git-sync:v4.4.0
-    restart: unless-stopped
-    environment:
-      GIT_SYNC_REPO: https://github.com/dannyneup/homelab
-      GIT_SYNC_BRANCH: add_traefik
-      GIT_SYNC_DEST: /git
-      GIT_SYNC_WAIT: 30
-    volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/config:/git/docker/traefik/config:rw
 
 networks:
   proxy: 
