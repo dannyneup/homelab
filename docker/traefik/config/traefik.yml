@@ -23,19 +23,10 @@ entryPoints:
     address: :443
 
 certificatesResolvers:
-  cloudflare-prod:
+  cloudflare:
     acme:
       storage: /etc/traefik/certs/cloudflare-acme.json
-      caServer: https://acme-v02.api.letsencrypt.org/directory
-      keyType: EC256
-      dnsChallenge: 
-        provider: cloudflare
-        resolvers: 
-          - 1.1.1.1:83
-          - 8.8.8.8:83
-  cloudflare-staging:
-    acme:
-      storage: /etc/traefik/certs/cloudflare-acme.json
+      #caServer: https://acme-v02.api.letsencrypt.org/directory
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       keyType: EC256
       dnsChallenge: 
