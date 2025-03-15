@@ -3,7 +3,7 @@ http:
     traefik-dashboard:
       entryPoints:
         - websecure
-      rule: Host(`traefik-dashboard.home.neukoch.com`)
+      rule: Host(`traefik-dashboard.neukoch.com`)
       middlewares:
         - traefik-auth
       tls:

@@ -7,14 +7,16 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ./config/conf/:/etc/traefik/conf/
-      - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./config/conf/:/etc/traefik/conf/:ro
+      - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/:rw
     environment:
-      - CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+      CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+      DASHBOARD_CREDENTIALS: 
     labels:
-      - traefik.http.middlewares.traefik-auth.basicauth.users: ${DASHBOARD_CREDENTIALS}
-      - traefik.certificatesresolvers.cloudflare.acme.email: ${CLOUDFLARE_EMAIL}
+      traefik.enable: true
+      traefik.certificatesresolvers.cloudflare-prod.acme.email: ${CLOUDFLARE_EMAIL}
+      traefik.certificatesresolvers.cloudflare-staging.acme.email: ${CLOUDFLARE_EMAIL}
     networks:
       - proxy
     restart: unless-stopped
