@@ -20,7 +20,8 @@ services:
     networks:
       - proxy
     restart: unless-stopped
-    depends_on: git-sync-test
+    depends_on: 
+      - git-sync-test
 
   git-sync-test:
     container_name: git-sync-test
