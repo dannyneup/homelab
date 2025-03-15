@@ -14,9 +14,7 @@ services:
       CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
       DASHBOARD_CREDENTIALS: 
     labels:
-      traefik.enable: true
-      traefik.certificatesresolvers.cloudflare-prod.acme.email: ${CLOUDFLARE_EMAIL}
-      traefik.certificatesresolvers.cloudflare-staging.acme.email: ${CLOUDFLARE_EMAIL}
+      traefik.certificatesresolvers.cloudflare.acme.email: ${CLOUDFLARE_EMAIL}
     networks:
       - proxy
     restart: unless-stopped
