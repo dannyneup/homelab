@@ -1,6 +1,6 @@
 services:
   git-sync:
-    container_name: git-sync-main
+    container_name: git-sync
     image: registry.k8s.io/git-sync/git-sync:v4.4.0
     restart: unless-stopped
     entrypoint:
@@ -11,3 +11,4 @@ services:
       - --period=10s
     volumes:
       - ${GITSYNC_DIRECTORY}:/tmp/git:rw
+    user: ${UID}:${GID}
