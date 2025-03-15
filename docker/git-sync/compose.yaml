@@ -12,4 +12,3 @@ services:
       - --verbose=9
     volumes:
       - ${GITSYNC_DIRECTORY}:/tmp/git:rw
-    user: ${UID}:${GID}
