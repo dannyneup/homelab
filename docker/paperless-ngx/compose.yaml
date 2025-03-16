@@ -1,4 +1,4 @@
-ervices:
+services:
   paperless-ngx:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
