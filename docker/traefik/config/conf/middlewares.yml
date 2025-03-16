@@ -1,6 +1,0 @@
-http:
-  middlewares:
-    traefik-auth:
-      basicAuth:
-        users:
-          - {{ env "DASHBOARD_CREDENTIALS" }}

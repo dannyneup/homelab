@@ -2,23 +2,42 @@ services:
   traefik:
     container_name: traefik
     image: traefik:3.3.4
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${REPO_DATA_DIRECTORY}/docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ${REPO_DATA_DIRECTORY}/docker/traefik/config/conf/:/etc/traefik/conf/:ro
       - ${CONTAINER_DATA_DIRECTORY}/traefik/certs:/etc/traefik/certs/:rw
     environment:
       CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
-      DASHBOARD_CREDENTIALS: 
+      TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE: false
+      TRAEFIK_LOG_LEVEL: TRACE
+      TRAEFIK_API_DASHBOARD: true
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS: :443
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_ASDEFAULT: true
+      TRAEFIK_ENTRYPOINTS_WEBSECURE_HTTP_TLS_CERTRESOLVER: cloudflare
+      TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: :80
+      TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_TO: websecure
+      TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_SCHEME: https
+      TRAEFIK_ENTRYPOINTS_WEB_HTTP_REDIRECTIONS_ENTRYPOINT_PERMANENT: true
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_EMAIL: ${CLOUDFLARE_EMAIL}
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_STORAGE: /var/traefik/certs/cloudflare-acme.json
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_CASERVER: https://acme-v02.api.letsencrypt.org/directory
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_DNSCHALLENGE_PROVIDER: cloudflare
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_DNSCHALLENGE_RESOLVERS: 1.1.1.1:53,8.8.8.8:53
+      TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/docker.sock
+      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
+      TRAEFIK_PROVIDERS_DOCKER_WATCH: true
     labels:
-      traefik.certificatesresolvers.cloudflare.acme.email: ${CLOUDFLARE_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.api.rule: Host(`traefik.neukoch.com`)
+      traefik.http.routers.api.service: api@internal
+      traefik.http.routers.api.entrypoints: websecure
+      traefik.http.routers.api.tls: true
+      traefik.http.routers.api.tls.certresolver: cloudflare
     networks:
       - proxy
-    restart: unless-stopped
-
 networks:
   proxy: 
     external: true
