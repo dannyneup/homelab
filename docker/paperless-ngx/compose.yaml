@@ -21,6 +21,7 @@ services:
       traefik.http.routers.paperless.rule: Host(`paperless.neukoch.com`)
       traefik.http.services.paperless.loadbalancer.server.port: 8000
     networks:
+      - paperless
       - proxy
 
   redis:
@@ -28,6 +29,8 @@ services:
     restart: unless-stopped
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/redis/data:/data
+    networks:
+      - paperless
 
   postgres:
     image: docker.io/library/postgres:16
@@ -40,5 +43,6 @@ services:
       POSTGRES_PASSWORD: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
 
 networks:
+  paperless:
   proxy:
     external: true
