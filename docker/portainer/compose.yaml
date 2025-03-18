@@ -1,0 +1,11 @@
+name: portainer
+services:
+  portainer:
+    image: portainer/portainer-ee:latest
+    container_name: portainer
+    volumes: 
+      - ./portainer/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    labels:
+      traefik.http.routers.api.rule: Host(`portainer.neukoch.com`)
