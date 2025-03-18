@@ -3,14 +3,14 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
-      - paperless-ngx_redis
-      - paperless-ngx_postgres
+      - redis
+      - postgres
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
-      PAPERLESS_REDIS: redis://paperless-ngx_redis:6379
-      PAPERLESS_DBHOST: paperless-ngx_postgres
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_DBHOST: postgres
       PAPERLESS_DBNAME: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
       PAPERLESS_DBUSER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
       PAPERLESS_DBPASS: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
@@ -18,19 +18,20 @@ services:
       PAPERLESS_ADMIN_PASSWORD: ${SERVICES_PAPERLESS_ADMIN_PASSWORD}
     labels:
       traefik.enable: true
-      traefik.http.routers.paperless-ngx.rule: Host(`paperless.neukoch.com`)
+      traefik.http.routers.paperless.rule: Host(`paperless.neukoch.com`)
+      traefik.http.services.paperless.loadbalancer.server.port: 8000
 
-  paperless-ngx_redis:
+  redis:
     image: docker.io/library/redis:7
     restart: unless-stopped
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx_redis/data:/data
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/redis/data:/data
 
-  paperless-ngx_postgres:
+  postgres:
     image: docker.io/library/postgres:16
     restart: unless-stopped
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx_postgres/data:/var/lib/postgresql/data
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/postgres/data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
       POSTGRES_USER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
