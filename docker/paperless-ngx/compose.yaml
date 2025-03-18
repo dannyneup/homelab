@@ -20,6 +20,8 @@ services:
       traefik.enable: true
       traefik.http.routers.paperless.rule: Host(`paperless.neukoch.com`)
       traefik.http.services.paperless.loadbalancer.server.port: 8000
+    networks:
+      - proxy
 
   redis:
     image: docker.io/library/redis:7
