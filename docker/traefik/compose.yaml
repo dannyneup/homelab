@@ -29,6 +29,7 @@ services:
       TRAEFIK_PROVIDERS_DOCKER_ENDPOINT: unix:///var/run/docker.sock
       TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: false
       TRAEFIK_PROVIDERS_DOCKER_WATCH: true
+      TRAEFIK_PROVIDERS_DOCKER_NETWORK: proxy
     labels:
       traefik.enable: true
       traefik.http.routers.api.rule: Host(`traefik.neukoch.com`)
