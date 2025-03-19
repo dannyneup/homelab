@@ -9,6 +9,10 @@ services:
     networks:
       - proxy
       - macvlan
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homeassistant.rule: Host(`homeassistant.neukoch.com`)
+      traefik.http.services.homeassistant.loadbalancer.server.port: 8123
 
 networks:
   proxy:
