@@ -9,13 +9,13 @@ services:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
-      PAPERLESS_REDIS: redis://paperless-ngx_redis:6379
+      PAPERLESS_REDIS: redis://redis:6379
       PAPERLESS_DBHOST: postgres
-      PAPERLESS_DBNAME: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
-      PAPERLESS_DBUSER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
-      PAPERLESS_DBPASS: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
-      PAPERLESS_ADMIN_USER: ${SERVICES_PAPERLESS_ADMIN_USERNAME}
-      PAPERLESS_ADMIN_PASSWORD: ${SERVICES_PAPERLESS_ADMIN_PASSWORD}
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: ${POSTGRES_USERNAME}
+      PAPERLESS_DBPASS: ${POSTGRES_PASSWORD}
+      PAPERLESS_ADMIN_USER: ${ADMIN_USERNAME}
+      PAPERLESS_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     labels:
       traefik.enable: true
       traefik.http.routers.paperless.rule: Host(`paperless.neukoch.com`)
@@ -38,9 +38,9 @@ services:
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/postgres/data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
-      POSTGRES_USER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
+      POSTGRES_DB: paperless
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - paperless
 
