@@ -17,3 +17,7 @@ services:
       traefik.http.services.zigbee2mqtt.loadbalancer.server.port: 8080
     networks:
       - proxy
+
+networks:
+  proxy:
+    external: true
