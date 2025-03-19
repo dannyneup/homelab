@@ -1,0 +1,19 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - ${CONTAINER_DATA_DIRECTORY}/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    networks:
+      - proxy
+      - macvlan
+
+networks:
+  proxy:
+    external: true
+  macvlan:
+    driver: macvlan
+    driver_opts:
+      parent: ${MACVLAN_NETWORK_INTERFACE}
