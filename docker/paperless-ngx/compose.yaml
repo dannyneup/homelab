@@ -9,6 +9,7 @@ services:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
+      PAPERLESS_URL: paperless.neukoch.com
       PAPERLESS_REDIS: redis://redis:6379
       PAPERLESS_DBHOST: postgres
       PAPERLESS_DBNAME: paperless
