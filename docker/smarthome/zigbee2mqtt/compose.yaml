@@ -15,3 +15,5 @@ services:
       traefik.enable: true
       traefik.http.routers.zigbee2mqtt.rule: Host(`zigbee2mqtt.neukoch.com`)
       traefik.http.services.zigbee2mqtt.loadbalancer.server.port: 8080
+    networks:
+      - proxy
