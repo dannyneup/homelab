@@ -3,13 +3,13 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
-      - redis
-      - postgres
+      - paperless-ngx_redis
+      - paperless-ngx_postgres
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
-      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_REDIS: redis://paperless-ngx_redis:6379
       PAPERLESS_DBHOST: postgres
       PAPERLESS_DBNAME: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
       PAPERLESS_DBUSER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
@@ -41,6 +41,8 @@ services:
       POSTGRES_DB: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
       POSTGRES_USER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
+    networks:
+      - paperless
 
 networks:
   paperless:
