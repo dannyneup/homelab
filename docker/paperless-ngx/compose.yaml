@@ -3,8 +3,8 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
-      - paperless-ngx_redis
-      - paperless-ngx_postgres
+      - redis
+      - postgres
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
