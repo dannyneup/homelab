@@ -3,34 +3,50 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
-      - paperless-ngx_redis
-      - paperless-ngx_postgres
-    ports:
-      - 8000:8000
+      - redis
+      - postgres
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/data:/usr/src/paperless/data
       - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/media:/usr/src/paperless/media
     environment:
-      PAPERLESS_REDIS: redis://paperless-ngx_redis:6379
-      PAPERLESS_DBHOST: paperless-ngx_postgres
-      PAPERLESS_DBNAME: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
-      PAPERLESS_DBUSER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
-      PAPERLESS_DBPASS: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
-      PAPERLESS_ADMIN_USER: ${SERVICES_PAPERLESS_ADMIN_USERNAME}
-      PAPERLESS_ADMIN_PASSWORD: ${SERVICES_PAPERLESS_ADMIN_PASSWORD}
+      PAPERLESS_URL: https://paperless.neukoch.com
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_DBHOST: postgres
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: ${POSTGRES_USERNAME}
+      PAPERLESS_DBPASS: ${POSTGRES_PASSWORD}
+      PAPERLESS_ADMIN_USER: ${ADMIN_USERNAME}
+      PAPERLESS_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PAPERLESS_DEBUG: ${DEBUG:-false}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.paperless.rule: Host(`paperless.neukoch.com`)
+      traefik.http.services.paperless.loadbalancer.server.port: 8000
+    networks:
+      - paperless
+      - proxy
 
-  paperless-ngx_redis:
+  redis:
     image: docker.io/library/redis:7
     restart: unless-stopped
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx_redis/data:/data
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/redis/data:/data
+    networks:
+      - paperless
 
-  paperless-ngx_postgres:
+  postgres:
     image: docker.io/library/postgres:16
     restart: unless-stopped
     volumes:
-      - ${CONTAINER_DATA_DIRECTORY}/documents/paperless-ngx_postgres/data:/var/lib/postgresql/data
+      - ${CONTAINER_DATA_DIRECTORY}/paperless-ngx/postgres/data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${SERVICES_PAPERLESS_POSTGRES_DATABASENAME}
-      POSTGRES_USER: ${SERVICES_PAPERLESS_POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${SERVICES_PAPERLESS_POSTGRES_PASSWORD}
+      POSTGRES_DB: paperless
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - paperless
+
+networks:
+  paperless:
+  proxy:
+    external: true
