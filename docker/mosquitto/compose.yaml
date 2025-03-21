@@ -13,8 +13,8 @@ services:
     labels:
       traefik.enable: true
       traefik.tcp.routers.mosquitto.rule: HostSNI(`mosquitto.neukoch.com`)
-      traefik.http.routers.mosquitto.entrypoint: mqttsecure
-      traefik.http.services.portainer.loadbalancer.server.port: 1883
+      traefik.tcp.routers.mosquitto.entrypoint: mqttsecure
+      traefik.tcp.services.portainer.loadbalancer.server.port: 1883
 
 networks:
   mosquitto:
