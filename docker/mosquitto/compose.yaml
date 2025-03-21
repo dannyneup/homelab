@@ -1,18 +1,20 @@
 services:
   mosquitto:
-    container_name: mosquitto
     image: eclipse-mosquitto:2.0.21
     restart: unless-stopped
     volumes:
-      - "${CONTAINER_DATA_DIRECTORY}/mosquitto:/mosquitto"
-    ports:
-      - "1883:1883"
+      - ${CONTAINER_DATA_DIRECTORY}/mosquitto/data:/mosquitto/data:rw
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: /entrypoint.sh
+    environment:
+      USERNAME: 
+      PASSWORD: 
     labels:
       traefik.enable: true
       traefik.tcp.routers.mosquitto.rule: HostSNI(`mosquitto.neukoch.com`)
       traefik.http.routers.mosquitto.entrypoint: mqttsecure
       traefik.http.services.portainer.loadbalancer.server.port: 1883
-
 
 networks:
   mosquitto:
