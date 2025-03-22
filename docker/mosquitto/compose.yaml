@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${CONTAINER_DATA_DIRECTORY}/mosquitto/data:/mosquitto/data:rw
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - ./entrypoint.sh:/entrypoint.sh:ro
     entrypoint: /entrypoint.sh
     environment:
