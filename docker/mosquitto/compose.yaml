@@ -24,5 +24,6 @@ services:
       traefik.tcp.services.mosquitto.loadbalancer.server.port: 8883
 networks:
   mqtt:
+    name: mqtt
   proxy:
     external: true
