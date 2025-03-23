@@ -7,8 +7,6 @@ services:
       - ${CONTAINER_DATA_DIRECTORY}/hortusfox-web/public/img:/var/www/html/public/img
       - ${CONTAINER_DATA_DIRECTORY}/hortusfox-web/public/backup:/var/www/html/public/backup
       - ${CONTAINER_DATA_DIRECTORY}/hortusfox-web/public/themes:/var/www/html/public/themes
-    ports:
-      - 8080:80
     environment:
       APP_ADMIN_EMAIL: ${ADMIN_EMAIL}
       APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
