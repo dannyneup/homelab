@@ -1,14 +1,29 @@
 services:
   mosquitto:
-    container_name: mosquitto
     image: eclipse-mosquitto:2.0.21
     restart: unless-stopped
     volumes:
-      - "${CONTAINER_DATA_DIRECTORY}/mosquitto:/mosquitto"
-    ports:
-      - "1883:1883"
-      - "9001:9001"
-    command: "mosquitto -c /mosquitto-no-auth.conf"
-
+      - ${CONTAINER_DATA_DIRECTORY}/mosquitto/data:/mosquitto/data:rw
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: /entrypoint.sh
+    environment:
+      USERNAME: 
+      PASSWORD: 
+    expose:
+      - 8883
+      - 1883
+    networks: 
+      - mqtt
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.tcp.routers.mosquitto.rule: HostSNI(`mosquitto.neukoch.com`)
+      traefik.tcp.routers.mosquitto.entrypoints: mqtts
+      traefik.tcp.routers.mosquitto.tls.certresolver: cloudflare
+      traefik.tcp.services.mosquitto.loadbalancer.server.port: 8883
 networks:
-  mosquitto:
+  mqtt:
+    name: mqtt
+  proxy:
+    external: true
