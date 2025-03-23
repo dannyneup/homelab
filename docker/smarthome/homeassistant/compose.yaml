@@ -10,6 +10,7 @@ services:
       proxy:
       macvlan_services:
         ipv4_address: ${IPV4_ADDRESS}
+      mqtt:
     labels:
       traefik.enable: true
       traefik.http.routers.homeassistant.rule: Host(`homeassistant.neukoch.com`)
@@ -19,4 +20,6 @@ networks:
   proxy:
     external: true
   macvlan_services:
+    external: true
+  mqtt:
     external: true
