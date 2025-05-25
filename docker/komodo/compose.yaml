@@ -32,7 +32,7 @@ services:
       KOMODO_PASSKEY: ${PASSKEY}
     volumes:
       - repo-cache:/repo-cache:rw
-      - syncs:syncs:rw
+      - syncs:/syncs:rw
     networks:
       - komodo-database
       - komodo-periphery
