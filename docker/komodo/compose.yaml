@@ -5,8 +5,6 @@ services:
       komodo.skip:
     command: --quiet --wiredTigerCacheSizeGB 0.25
     restart: unless-stopped
-    logging:
-      driver: ${COMPOSE_LOGGING_DRIVER:-local}
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
